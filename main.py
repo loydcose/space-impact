@@ -3,11 +3,17 @@ import os
 import random
 import time
 pygame.font.init() # for font
+pygame.mixer.init()
 
 
 WIDTH, HEIGHT = 600, 600
 WIN = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("Space Impact")
+
+#music
+bg_music_path = os.path.join("assets", "bgmusic_space_impact.mp3")
+pygame.mixer.music.load(bg_music_path)
+pygame.mixer.music.play(-1)
 
 #load images
 RED_SPACE_SHIP = pygame.image.load(os.path.join("assets", "pixel_ship_red_small.png"))
@@ -51,7 +57,7 @@ class Laser:
 #characters class
 
 class Ship:
-    COOLDOWN = 30
+    COOLDOWN = 15
     
     def __init__(self, x, y, health = 100): #designating position of ships
         self.x = x
@@ -261,7 +267,7 @@ def main():
             enemy.move(enemy_vel)
             enemy.move_lasers(laser_vel, player)
             #enemy shoots randomly prob %50 enemy shoots
-            if random.randrange(0, 2*60) == 1:
+            if random.randrange(0, 4*60) == 1:
                 enemy.shoot()
 
             if collide(enemy, player):
@@ -276,6 +282,8 @@ def main():
 
          #negative vel makes lasers go up                   
         player.move_lasers(-laser_vel, enemies)#check if lasers collided with enemies
+    pygame.mixer.music.stop()
+    
 #main menu loop
 def main_menu():
     title_font = pygame.font.SysFont("comicsans", 40)
@@ -295,7 +303,7 @@ def main_menu():
     pygame.quit()
         
         
-main_menu()
+main_menu() # update: balance enemy shoot pprobabiloty, increased player laser spam
             
 
 
